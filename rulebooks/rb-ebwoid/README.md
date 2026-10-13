@@ -418,7 +418,7 @@ Any entity acting as an authorized Attestation Provider under this rulebook **SH
 
 **Issuance Basis and Timestamping:** The Provider **SHALL** issue the attestation based on information and supporting documentation that is valid and accurate at the exact moment of issuance. A timestamp of issuance (iat in SD-JWT VC) **MUST** be included in each attestation. This enables a Relying Party to not only verify the attestation's temporal validity but also to correctly validate the Attestation Provider's trust status as it was at the moment of issuance (e.g., by checking against a historical Trust List).
 
-*   **Data Currency and Revocation:** The Provider is responsible for the ongoing accuracy of the attested information. The Provider **MUST** immediately revoke the attestation if any change occurs that affects the validity or accuracy of the underlying data.
+*   **Data Currency and Revocation:** The Provider is responsible for the ongoing accuracy of the attested information. The Provider **MUST** revoke the attestation if any change occurs that affects the validity or accuracy of the underlying data in accordance with the timelines defined in chapter 7.3
 
 #### **2. Identity and Attribute Proofing (as per ETSI TS 119 461)**
 
