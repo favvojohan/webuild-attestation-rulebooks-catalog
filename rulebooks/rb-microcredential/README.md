@@ -154,7 +154,7 @@ marked not applicable carry a stated reason.
 | EW-DM-12-002 | ARB_01b | yes | 5 | SD-JWT VC following HAIP conventions |
 | EW-DM-12-003 | ARB_02 | no |  | Proximity presentation is not in scope, so mdoc is not required |
 | EW-DM-12-005 | ARB_04 | no |  | No W3C VCDM encoding is defined in this version |
-| EW-DM-12-006 | ARB_05 | yes | 5 | `vct` `VerifiableMicroCredential` |
+| EW-DM-12-006 | ARB_05 | yes | 5 | `vct` `https://webuildconsortium.eu/credentials/microcredential/1.0` |
 | EW-DM-12-007 | ARB_06 | yes | 3 | Attributes defined independently of encoding |
 | EW-DM-12-008 | ARB_06a | no |  | No mdoc encoding is defined in this version |
 | EW-DM-12-009 | ARB_06b | yes | 5 | IANA-registered, public and private claim names |
@@ -203,7 +203,7 @@ The attestation is issued as a Verifiable Credential compatible with the EUDI Wa
 
 * `scope`: `MicroCredential`;
 * `format`: `vc+sd-jwt`;
-* `vct`: `VerifiableMicroCredential`;
+* `vct`: `https://webuildconsortium.eu/credentials/microcredential/1.0`;
 * `claims`: the claims defined in this Rulebook;
 * `proof_types_supported`: issuer-defined, including `jwt` where supported;
 * `cryptographic_binding_methods_supported`: issuer-defined, for example `jwk` or `cose_key`.
@@ -284,7 +284,7 @@ Metadata describes the attestation rather than its subject.
 
 | **Data Identifier** | **Semantic Reference** | **Definition** | **Data type** | **Example value** |
 | --- | --- | --- | --- | --- |
-| `vct` | SD-JWT VC | Verifiable Credential Type identifying this attestation type. | string | `VerifiableMicroCredential` |
+| `vct` | SD-JWT VC | Verifiable Credential Type identifying this attestation type. | string | `https://webuildconsortium.eu/credentials/microcredential/1.0` |
 | `iss` | SD-JWT VC / JWT | Identifier of the issuer of the credential. | string | `https://issuer.example-university.edu` |
 | `iat` | JWT | Time at which the credential was issued. | integer | `1781740800` |
 | `cnf` | SD-JWT VC / JOSE | Confirmation claim binding the credential to key material controlled by the Holder or Wallet Unit, where holder binding is used. | object | `{ "jwk": { ... } }` |
@@ -312,14 +312,13 @@ Metadata describes the attestation rather than its subject.
 | `jti` | JWT | Unique identifier of the credential instance. | string | `urn:uuid:9a3f6b2e-1c44-4b8a-9e21-6f0a2d7c5b31` |
 | `status` | SD-JWT VC status mechanism, where used | Status information enabling revocation or correction checks. | object | `{ "status_list": { ... } }` |
 | `trust_anchor` | ARF Topic 12 | Location or identifier of the machine-readable trust anchor or trust framework entry used to verify issuer authorisation. | string | `https://trust.example.eu/education/institutions/example-university` |
-| `cryptographically_bound_to` | ARF Topic 12 / ARB_28 | Identifier of another attestation type to which this attestation is cryptographically bound, where such binding is used. | string | `urn:eudi:pid:1` |
 
 ### 4.3 Conditional metadata
 
 | **Data Identifier** | **Semantic Reference** | **Definition** | **Data type** | **Example value** |
 | --- | --- | --- | --- | --- |
 | `status` | SD-JWT VC status mechanism, where used | SHOULD be present where the awarding body needs the ability to revoke or correct a Micro-credential Attestation after issuance, for example due to an issuance error or academic integrity finding. | object | `{ "status_list": { ... } }` |
-| `cryptographically_bound_to` | ARF Topic 12 / ARB_28 | SHOULD be present where the Micro-credential Attestation must be presented together with PID or another identity attestation for strong holder matching. | string | `urn:eudi:pid:1` |
+| `cryptographically_bound_to` | ARF Topic 12 / ARB_28 | MUST be present where the Micro-credential Attestation must be presented together with PID or another identity attestation for strong holder matching. | string | `urn:eudi:pid:1` |
 
 ### 4.4 Code lists
 
@@ -356,7 +355,7 @@ Metadata describes the attestation rather than its subject.
 | Format | Supported | Identifier | Specification | Notes |
 | --- | --- | --- | --- | --- |
 | ISO/IEC 18013-5 mdoc | no |  | [ISO/IEC 18013-5] | Not defined in this version; see section 5.2 |
-| SD-JWT VC | yes | `vct` `VerifiableMicroCredential` | [SD-JWT VC], [HAIP] | Follows SD-JWT VC and HAIP conventions |
+| SD-JWT VC | yes | `vct` `https://webuildconsortium.eu/credentials/microcredential/1.0` | [SD-JWT VC], [HAIP] | Follows SD-JWT VC and HAIP conventions |
 | W3C VCDM | no |  | [W3C VCDM v2.0] | Not defined in this version; see section 5.3 |
 
 ### 5.1 SD-JWT VC-based encoding
@@ -366,7 +365,7 @@ The Micro-credential Attestation SHALL be issued as an SD-JWT VC.
 The Verifiable Credential Type (`vct`) for this attestation type is:
 
 ```text
-VerifiableMicroCredential
+https://webuildconsortium.eu/credentials/microcredential/1.0
 ```
 
 The credential claims defined in this section SHALL follow SD-JWT VC and HAIP conventions where applicable. Claim names are either IANA-registered JWT claims, public or reusable names, or private names specific to this attestation type.
@@ -384,7 +383,7 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
 | `jti` | `jti` | string | Unique credential instance identifier, where used. | MUST NOT |
 | `cnf` | `cnf` | object | Holder binding confirmation claim, where used. | MUST NOT |
 | `status` | `status` | object | Status or revocation information, where used. | MUST NOT |
-| `vct` | `vct` | string | SD-JWT VC type. Value SHALL be `VerifiableMicroCredential`. | MUST NOT |
+| `vct` | `vct` | string | SD-JWT VC type. Value SHALL be `https://webuildconsortium.eu/credentials/microcredential/1.0`. | MUST NOT |
 
 #### 5.1.2 Public or reusable claims
 
@@ -403,28 +402,33 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
 | `identifier` | `identifier` | string | Unique identifier of the micro-credential instance. | MUST |
 | `title` | `title` | string | Title of the micro-credential. | MUST |
 | `issuerCountry` | `issuerCountry` | string | Country/region of the organisation that sealed/issued the credential. | MUST |
-| `awardingBody` | `awardingBody` | string | Name of the formal education provider that awarded the micro-credential. | MUST |
+| `awardingBody` | `awardingBody` | object | Name and identifiers of the formal education provider that awarded the micro-credential. | MUST |
+| `issuanceDate` | `issuanceDate` | string | Date on which the credential was sealed and issued, formatted as ISO 8601 date. | MUST |
+| `learningOutcomes` | `learningOutcomes` | array of objects | Structured descriptions of the learning outcomes acquired by the learner. | MUST |
+| `ECTS` | `ECTS` | number | ECTS workload, where applicable under Section 3.4. | MUST/MUST NOT |
+| `volumeOfLearning` | `volumeOfLearning` | string | ISO 8601 duration for volume of learning, where applicable under Section 3.4. | MUST NOT/MUST |
+| `typeOfAssessment` | `typeOfAssessment` | array of strings | Type or types of assessment used to validate the learning outcomes. | MUST |
+| `formOfParticipation` | `formOfParticipation` | string | Form of participation in the learning activity. | MUST |
+| `learningActivityType` | `learningActivityType` | string | Category of the learning activity, where disclosed. | MAY |
+| `qualityAssurance` | `qualityAssurance` | string | Type of quality assurance underpinning the micro-credential. | MUST |
+| `trust_anchor` | `trust_anchor` | string | Location or identifier of the trust anchor or trust framework entry, where used. | MUST NOT |
+| `cryptographically_bound_to` | `cryptographically_bound_to` | string | Identifier of another attestation type to which this attestation is bound, where used. | MUST NOT |
+
+
 <!-- | `awardingBodyAddress` | `awardingBodyAddress` | string | Registered or contact address of the awarding body, where disclosed. | MAY | -->
 <!-- | `awardingBodyHomepage` | `awardingBodyHomepage` | string | Homepage URL of the awarding body, where disclosed. | MAY | -->
 <!-- | `awardingBodyIdentifier` | `awardingBodyIdentifier` | string | Additional identifier(s) of the awarding body, where disclosed. | MAY | -->
-| `issuanceDate` | `issuanceDate` | string | Date on which the credential was sealed and issued, formatted as ISO 8601 date. | MUST |
 <!-- | `level` | `level` | string | Level of the learning outcomes against the EQF or an applicable framework, where applicable. | MAY | -->
 <!-- | `nationalQualificationsFrameworkLevel` | `nationalQualificationsFrameworkLevel` | string | Level against a national or regional qualifications framework, where disclosed. | MAY | -->
 <!-- | `educationLevelDescriptor` | `educationLevelDescriptor` | string | Framework-independent level descriptor, where disclosed. | MAY | -->
-| `learningOutcomes` | `learningOutcomes` | array of strings | Description of the learning outcomes acquired by the learner. | MUST |
 <!-- | `learningOutcomeSummary` | `learningOutcomeSummary` | string | Free-text summary of the learning outcomes, where disclosed. | MAY | -->
 <!-- | `fieldOfEducation` | `fieldOfEducation` | string | ISCED-F 2013 field of education code, where disclosed. | MAY | -->
 <!-- | `escoReference` | `escoReference` | array of strings | ESCO skill/competence references, where disclosed. | MAY | -->
-<!-- | `notionalWorkload` | `notionalWorkload` | object | Notional workload, expressed as `{ "value": ..., "unit": ... }`. | MUST | -->
-| `typeOfAssessment` | `typeOfAssessment` | string | Type of assessment used to validate the learning outcomes. | MUST |
-| `formOfParticipation` | `formOfParticipation` | string | Form of participation in the learning activity. | MUST |
-| `learningActivityType` | `learningActivityType` | string | Category of the learning activity, where disclosed. | MAY |
 <!-- | `languageOfAssessment` | `languageOfAssessment` | string | Language of assessment, where disclosed. | MAY | -->
 <!-- | `idVerificationMethod` | `idVerificationMethod` | string | Supervision/identity-verification method used, where disclosed. | MAY | -->
 <!-- | `grade` | `grade` | string | Grade or result obtained, where the assessment produces one. | MAY | -->
 <!-- | `gradingScheme` | `gradingScheme` | string | Description of the grading scheme, where disclosed. | MAY | -->
 <!-- | `entryRequirements` | `entryRequirements` | array of strings | Prerequisites needed to enrol, where disclosed. | MAY | -->
-| `qualityAssurance` | `qualityAssurance` | string | Type of quality assurance underpinning the micro-credential. | MUST |
 <!-- | `stackable` | `stackable` | boolean | Whether the micro-credential is designed to stack towards a larger qualification, where disclosed. | MAY | -->
 <!-- | `partOfQualification` | `partOfQualification` | string | Identifier or title of the larger qualification, where disclosed. | MAY | -->
 <!-- | `accreditation` | `accreditation` | object | Structured accreditation details underpinning `qualityAssurance`, where disclosed. | MAY | -->
@@ -433,18 +437,14 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
 <!-- | `citizenshipCountry` | `citizenshipCountry` | string | Learner country of citizenship, where disclosed. | MAY | -->
 <!-- | `nationalID` | `nationalID` | string | National or government identifier of the learner, where disclosed. | MAY | -->
 <!-- | `registeredAddress` | `registeredAddress` | string | Learner registered/contact address, where disclosed. | MAY | -->
-| `trust_anchor` | `trust_anchor` | string | Location or identifier of the trust anchor or trust framework entry, where used. | MUST NOT |
-| `cryptographically_bound_to` | `cryptographically_bound_to` | string | Identifier of another attestation type to which this attestation is bound, where used. | MUST NOT |
 
-#### 5.1.4 Example JWT claim set
+#### 5.1.4 Example minumum JWT claim set
 
 ```json
 {
   "iss": "https://issuer.example-university.edu",
   "iat": 1781740800,
-  // "nbf": 1781740800,
-  // "jti": "urn:uuid:9a3f6b2e-1c44-4b8a-9e21-6f0a2d7c5b31",
-  "vct": "VerifiableMicroCredential",
+  "vct": "https://webuildconsortium.eu/credentials/microcredential/1.0",
   "attestation_legal_category": "non-qualified-EAA",
   "identifier": "MC-2026-0007421",
   "title": "Introduction to Applied Data Ethics",
@@ -455,9 +455,7 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
     "legalName": "Linköping University",
     "legalIdentifier": "999852236"
   },
-  // "awardingBodyHomepage": "https://liu.se",
   "issuanceDate": "2026-06-15",
-  // "level": "EQF-6",
   "learningOutcomes": [
     {
       "title": "The title of the learning outcome 1", 
@@ -468,29 +466,12 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
       "description": "The actual learning outcome 2"
     }
   ],
-  // "fieldOfEducation": "0613",
-  // "escoReference": [
-  //   "http://data.europa.eu/esco/skill/abc12345"
-  // ],
-  "notionalWorkload": {
-    "value": 3.0,
-    "unit": "ECTS"
-  },
-  "typeOfAssessment": "http://data.europa.eu/snb/assessment/6a4db9f11d",
+  "ECTS": 3.0,
+  "typeOfAssessment": [
+    "http://data.europa.eu/snb/assessment/6a4db9f11d"
+  ],
   "formOfParticipation": "http://data.europa.eu/snb/learning-assessment/920fbb3cbe",
-  // "grade": "Pass",
-  // "gradingScheme": "Pass/Fail",
   "qualityAssurance": "institutional-accreditation",
-  // "accreditation": {
-  //   "title": "Institutional Accreditation 2024",
-  //   "type": "institutional-accreditation",
-  //   "accreditingAgent": "Swedish Higher Education Authority",
-  //   "decision": "approved",
-  //   "decisionDate": "2024-01-15",
-  //   "reviewDate": "2029-01-15"
-  // },
-  // "stackable": true,
-  // "partOfQualification": "BSc Data Science, Linköping University",
   "trust_anchor": "https://trust.example.eu/education/institutions/example-university",
   "cnf": {
     "jwk": {
@@ -503,21 +484,16 @@ For all claims, this Rulebook specifies whether an Attestation Provider MUST, MA
 }
 ```
 
-#### 5.1.5 Example issued SD-JWT
-
-The following is a non-normative placeholder example. A production SD-JWT SHALL be generated by the issuer using the applicable signing algorithm, disclosure construction, holder binding, and SD-JWT VC rules.
-
-```text
-<issuer-signed-sd-jwt>~<disclosure-1>~<disclosure-2>~<disclosure-n>~<holder-binding-jwt>
-```
-
-#### 5.1.6 Example human-readable disclosed payload
-
-A university admissions office requesting evidence of a completed prerequisite micro-credential for course entry may receive a presentation disclosing the following claims:
+#### 5.1.5 Example JWT claim set (not implemented yet)
 
 ```json
 {
-  "vct": "VerifiableMicroCredential",
+  "iss": "https://issuer.example-university.edu",
+  "iat": 1781740800,
+  "nbf": 1781740800,
+  "jti": "urn:uuid:9a3f6b2e-1c44-4b8a-9e21-6f0a2d7c5b31",
+  "vct": "https://webuildconsortium.eu/credentials/microcredential/1.0",
+  "attestation_legal_category": "non-qualified-EAA",
   "identifier": "MC-2026-0007421",
   "title": "Introduction to Applied Data Ethics",
   "givenName": "Elena",
@@ -527,7 +503,9 @@ A university admissions office requesting evidence of a completed prerequisite m
     "legalName": "Linköping University",
     "legalIdentifier": "999852236"
   },
-  // "level": "EQF-6",
+  "awardingBodyHomepage": "https://liu.se",
+  "issuanceDate": "2026-06-15",
+  "level": "EQF-6",
   "learningOutcomes": [
     {
       "title": "The title of the learning outcome 1", 
@@ -538,12 +516,78 @@ A university admissions office requesting evidence of a completed prerequisite m
       "description": "The actual learning outcome 2"
     }
   ],
-  "notionalWorkload": {
-    "value": 3.0,
-    "unit": "ECTS"
+  "fieldOfEducation": "0613",
+  "escoReference": [
+    "http://data.europa.eu/esco/skill/abc12345"
+  ],
+  "ECTS": 3.0,
+  "typeOfAssessment": [
+    "http://data.europa.eu/snb/assessment/6a4db9f11d"
+  ],
+  "formOfParticipation": "http://data.europa.eu/snb/learning-assessment/920fbb3cbe",
+  "grade": "Pass",
+  "gradingScheme": "Pass/Fail",
+  "qualityAssurance": "institutional-accreditation",
+  "accreditation": {
+    "title": "Institutional Accreditation 2024",
+    "type": "institutional-accreditation",
+    "accreditingAgent": "Swedish Higher Education Authority",
+    "decision": "approved",
+    "decisionDate": "2024-01-15",
+    "reviewDate": "2029-01-15"
   },
-  "typeOfAssessment": "http://data.europa.eu/snb/assessment/6a4db9f11d"
-  // "grade": "Pass"
+  "stackable": true,
+  "partOfQualification": "BSc Data Science, Linköping University",
+  "trust_anchor": "https://trust.example.eu/education/institutions/example-university",
+  "cnf": {
+    "jwk": {
+      "kty": "EC",
+      "crv": "P-256",
+      "x": "...",
+      "y": "..."
+    }
+  }
+}
+```
+
+#### 5.1.6 Example issued SD-JWT
+
+The following is a non-normative placeholder example. A production SD-JWT SHALL be generated by the issuer using the applicable signing algorithm, disclosure construction, holder binding, and SD-JWT VC rules.
+
+```text
+<issuer-signed-sd-jwt>~<disclosure-1>~<disclosure-2>~<disclosure-n>~<holder-binding-jwt>
+```
+
+#### 5.1.7 Example human-readable disclosed payload
+
+A university admissions office requesting evidence of a completed prerequisite micro-credential for course entry may receive a presentation disclosing the following claims:
+
+```json
+{
+  "vct": "https://webuildconsortium.eu/credentials/microcredential/1.0",
+  "identifier": "MC-2026-0007421",
+  "title": "Introduction to Applied Data Ethics",
+  "givenName": "Elena",
+  "familyName": "Kowalska",
+  "issuerCountry": "http://publications.europa.eu/resource/authority/country/SWE",
+  "awardingBody": {
+    "legalName": "Linköping University",
+    "legalIdentifier": "999852236"
+  },
+  "learningOutcomes": [
+    {
+      "title": "The title of the learning outcome 1", 
+      "description": "The actual learning outcome 1"
+    },
+    {
+      "title": "The title of the learning outcome 2", 
+      "description": "The actual learning outcome 2"
+    }
+  ],
+  "ECTS": 3.0,
+  "typeOfAssessment": [
+    "http://data.europa.eu/snb/assessment/6a4db9f11d"
+  ]
 }
 ```
 
@@ -754,7 +798,7 @@ Where the metadata attribute `trust_anchor` is present, it SHOULD identify the l
 The Relying Party SHALL use the trust anchor to verify that:
 
 * the issuer signing key or certificate chains to a trusted authority or registered trust anchor;
-* the issuer is authorised to issue the `VerifiableMicroCredential` attestation type;
+* the issuer is authorised to issue the `https://webuildconsortium.eu/credentials/microcredential/1.0` attestation type;
 * the issuer metadata or trust framework entry has not expired or been revoked;
 * the issuer identity in the credential is consistent with the issuer identity in the trust framework;
 * the issuer is a formal education provider, or an authorised academic identity provider acting on behalf of one, for the relevant type of learning outcome.
