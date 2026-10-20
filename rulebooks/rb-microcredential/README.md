@@ -6,12 +6,15 @@ Category: non-qualified EAA
 
 * Author(s):
     * Stefan Liström, Sunet
+    * Johan Peterson, Linköping University
+    * Per von Bahr, Sunet
 * Previous Authors
     * N/A
 
 | Version | Date | Description |
 | --- | --- | --- |
 | 0.2 | 2026-09-11 | Restructured onto the generic WE BUILD attestation rulebook template (11 chapters). No normative content removed. |
+| 1.0 | 2026-10-20 | Updated attributes and metadata and fixed index errors. Focus on mandatory attributes for 1.0. |
 
 **Written against:** ARF version 3.0.0, WE BUILD template version 1.0 (generic)
 
