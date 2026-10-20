@@ -132,7 +132,7 @@ The Rulebook supports the following compliance objectives:
 
 This Rulebook does not define a qualified EAA or public-sector EAA profile. It also does not define ISO/IEC 18013-5 mdoc or W3C VCDM encodings in this version, although the ELM/EDC JSON-LD-based representation is noted in Section 3.3 as a potential future basis for a W3C VCDM encoding.
 
-This Rulebook does not define assurance or quality levels for the Micro-credential Attestation. Where a future version of this Rulebook introduces such levels, Sections 2.5 to 2.7 and Chapter 4 SHALL be updated accordingly.
+This Rulebook does not define assurance or quality levels for the Micro-credential Attestation. Where a future version of this Rulebook introduces such levels, Chapters 3 and 4 SHALL be updated accordingly.
 
 This Rulebook does not define transactional or payment-related data. Where a Micro-credential Attestation is used in a transaction involving payment, such requirements SHALL be defined in a separate payment attestation, payment profile, or transaction-specific rulebook.
 
@@ -345,10 +345,11 @@ Metadata describes the attestation rather than its subject.
 | `MC-IR-03` | `issuanceDate` SHALL NOT be in the future and SHALL NOT precede the completion of the assessment underlying the micro-credential. | Ensures the awarded date reflects a genuinely completed and assessed learning activity. | Issuer business rules. | Issuer SHALL reject issuance where this cannot be confirmed. |
 | `MC-IR-04` | If `grade` is present, `typeOfAssessment` SHALL indicate an assessment type capable of producing a graded outcome, and `gradingScheme` SHOULD also be present. | Prevents inconsistent or uninterpretable grading information. | Issuer business rules and verifier business validation. | Issuer SHALL NOT include `grade` inconsistent with the assessment type. Verifier MAY disregard an inconsistent or unexplained `grade` claim. |
 | `MC-IR-05` | If `escoReference` values are included, each SHALL resolve to a valid ESCO skill or competence URI. | Ensures semantic interoperability of skill references. | Issuer business rules and schema validation. | Issuer SHOULD validate references before issuance. Verifier MAY ignore unresolvable references. |
-| `MC-IR-06` | `notionalWorkload.value` SHALL be a positive number, and `notionalWorkload.unit` SHALL be a value from the code list in Section 2.8. | Ensures workload information is meaningful and consistently interpretable. | Issuer business rules and schema validation. | Issuer SHALL reject non-conformant workload values. Verifier MAY treat non-conformant values as unusable for its purpose. |
-| `MC-IR-07` | If `stackable` is `true`, `partOfQualification` SHOULD be present. | Ensures a stated stacking intent is backed by an identifiable target qualification. | Issuer business rules. | Issuer SHOULD include the target qualification. Verifier MAY treat an unsupported stackability claim with reduced confidence. |
-| `MC-IR-08` | If `accreditation` is present, its `type` value SHALL be consistent with the top-level `qualityAssurance` value. | Prevents contradictory quality-assurance information within a single credential. | Issuer business rules and schema validation. | Issuer SHALL ensure consistency before issuance. Verifier MAY disregard an internally inconsistent `accreditation` claim. |
-| `MC-IR-09` | Selective disclosure SHALL allow the Holder to reveal only the attributes required for the transaction. | Supports privacy and data minimisation. | Issuer credential construction and Wallet presentation logic. | Verifier SHALL request only necessary claims. Wallet SHOULD allow the Holder to review the disclosed claims. |
+| `MC-IR-06` | `ECTS` SHALL be a positive number, and `ECTS` SHALL NOT be used together with `volumeOfLearning` | Ensures workload information is meaningful and consistently interpretable. | Issuer business rules and schema validation. | Issuer SHALL reject the credential if `ECTS` and `volumeOfLearning` both are present. |
+| `MC-IR-07` | `volumeOfLearning` SHALL be a string in the ISO 8601 standard, and `volumeOfLearning` SHALL NOT be used together with `ECTS` | Ensures workload information is meaningful and consistently interpretable. | Issuer business rules and schema validation. | Issuer SHALL reject the credential if `ECTS` and `volumeOfLearning` both are present. |
+| `MC-IR-08` | If `stackable` is `true`, `partOfQualification` SHOULD be present. | Ensures a stated stacking intent is backed by an identifiable target qualification. | Issuer business rules. | Issuer SHOULD include the target qualification. Verifier MAY treat an unsupported stackability claim with reduced confidence. |
+| `MC-IR-09` | If `accreditation` is present, its `type` value SHALL be consistent with the top-level `qualityAssurance` value. | Prevents contradictory quality-assurance information within a single credential. | Issuer business rules and schema validation. | Issuer SHALL ensure consistency before issuance. Verifier MAY disregard an internally inconsistent `accreditation` claim. |
+| `MC-IR-10` | Selective disclosure SHALL allow the Holder to reveal only the attributes required for the transaction. | Supports privacy and data minimisation. | Issuer credential construction and Wallet presentation logic. | Verifier SHALL request only necessary claims. Wallet SHOULD allow the Holder to review the disclosed claims. |
 
 ## 5 Formats
 
@@ -725,7 +726,7 @@ A Relying Party receiving the attestation SHALL verify:
 * the credential validity period, where present;
 * the credential status, where a status mechanism is present;
 * holder binding, where used;
-* the integrity rules defined in Section 2.9;
+* the integrity rules defined in Section 4.5;
 * that the disclosed attributes are sufficient for the relying-party decision.
 
 The Relying Party SHALL distinguish between verification of the attestation and evaluation of whether the attested learning outcomes are sufficient for its purpose. Successful cryptographic or technical verification alone SHALL NOT be treated as sufficient proof that the attested learning outcomes meet the Relying Party's acceptance criteria; the Relying Party SHALL evaluate the attested skill claim against its own defined criteria relevant to the intended use context, for example admission requirements or credit recognition rules.
@@ -803,7 +804,7 @@ The Relying Party SHALL use the trust anchor to verify that:
 * the issuer identity in the credential is consistent with the issuer identity in the trust framework;
 * the issuer is a formal education provider, or an authorised academic identity provider acting on behalf of one, for the relevant type of learning outcome.
 
-Because the organisation that seals/issues the credential (`issuerCountry`) may differ from the organisation that awarded the underlying learning achievement (`awardingBody`), the Relying Party SHALL verify issuer trust based on the sealing organisation's trust anchor, and MAY additionally seek confirmation, for example through the accreditation information in Section 2.8 or through the trust framework entry, that the awarding body was itself entitled to award the micro-credential at the time of issuance.
+Because the organisation that seals/issues the credential (`issuerCountry`) may differ from the organisation that awarded the underlying learning achievement (`awardingBody`), the Relying Party SHALL verify issuer trust based on the sealing organisation's trust anchor, and MAY additionally seek confirmation, for example through the accreditation information in Section 3.3 or through the trust framework entry, that the awarding body was itself entitled to award the micro-credential at the time of issuance.
 
 Wallet Units MAY also use the same trust framework information during issuance to determine whether the provider is authorised to issue this attestation type.
 
